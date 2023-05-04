@@ -7,8 +7,8 @@ from multiprocessing import cpu_count
 
 class Config:
     def __init__(self):
-        self.device = "cuda:0"
-        self.is_half = True
+        self.device = "cpu"
+        self.is_half = False
         self.n_cpu = 0
         self.gpu_name = None
         self.gpu_mem = None
@@ -83,13 +83,13 @@ class Config:
                     strr = f.read().replace("3.7", "3.0")
                 with open("trainset_preprocess_pipeline_print.py", "w") as f:
                     f.write(strr)
-        elif torch.backends.mps.is_available():
-            print("没有发现支持的N卡, 使用MPS进行推理")
-            self.device = "mps"
+        # elif torch.backends.mps.is_available():
+        #     print("没有发现支持的N卡, 使用MPS进行推理")
+        #     self.device = "mps"
         else:
             print("没有发现支持的N卡, 使用CPU进行推理")
             self.device = "cpu"
-            self.is_half = True
+            self.is_half = False
 
         if self.n_cpu == 0:
             self.n_cpu = cpu_count()
